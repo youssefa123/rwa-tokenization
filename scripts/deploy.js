@@ -1,18 +1,7 @@
-import { viem } from "hardhat";
+const token = await hre.viem.deployContract("RWAToken", [
+  "Manhattan Property",
+  "Real Estate",
+]);
 
-async function main() {
-  const [deployer] = await viem.getWalletClients();
-  console.log("Deploying with account:", deployer.account.address);
-
-  const token = await viem.deployContract("RWAToken", [
-    "Manhattan Property",
-    "Real Estate",
-  ]);
-
-  console.log("RWAToken deployed to:", token.address);
-}
-
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+console.log("Deploying with account:", (await hre.viem.getWalletClients())[0].account.address);
+console.log("RWAToken deployed to:", token.address);

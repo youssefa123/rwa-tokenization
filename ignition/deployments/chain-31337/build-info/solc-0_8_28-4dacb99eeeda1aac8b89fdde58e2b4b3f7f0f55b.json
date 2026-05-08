@@ -1,0 +1,49 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-4dacb99eeeda1aac8b89fdde58e2b4b3f7f0f55b",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.4.5"
+  },
+  "userSourceNameMap": {
+    "contracts/RWAToken.sol": "project/contracts/RWAToken.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/RWAToken.sol": {
+        "content": "// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.28;\n\ncontract RWAToken {\n  string public assetName;\n  string public assetType;\n  address public owner;\n  uint public totalSupply;\n\n  mapping(address => uint) public balances;\n\n  event Minted(address indexed to, uint amount);\n  event Transferred(address indexed from, address indexed to, uint amount);\n\n  constructor(string memory _assetName, string memory _assetType) {\n        assetName = _assetName;\n        assetType = _assetType;\n        owner = msg.sender;\n        totalSupply = 0;\n    }\n\n    function mint(address to, uint amount) public {\n        require(msg.sender == owner, \"Only owner can mint\");\n        balances[to] += amount;\n        totalSupply += amount;\n        emit Minted(to, amount);\n    }\n\n    function transfer(address to, uint amount) public {\n        require(balances[msg.sender] >= amount, \"Insufficient balance\");\n        balances[msg.sender] -= amount;\n        balances[to] += amount;\n        emit Transferred(msg.sender, to, amount);\n    }\n\n    function balanceOf(address account) public view returns (uint) {\n        return balances[account];\n    }\n}\n  \n"
+      }
+    }
+  }
+}
